@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Turtle Drawing — Canvas Version</title>
+  <style>
+    :root { --bg: #0b0b0b; --panel: rgba(0,0,0,0.55); --text: #fff; --muted: #ddd; }
+    html,body { height: 100%; margin: 0; background: var(--bg); font-family: Inter, Arial, sans-serif; }
+    .app { width:100vw; height:100vh; display:flex; align-items:center; justify-content:center; }
+    .canvas-wrap { position: relative; width: 100vw; height: 100vh; max-width: 1360px; max-height: 768px; }
+    canvas { display:block; width:100%; height:100%; background: black; }
+    .top-instructions {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--text);
+      background: var(--panel);
+      padding:8px 12px;
+      border-radius:8px;
+      font-size:14px;
+      font-weight:600;
+      white-space: nowrap;
+    }
+    .status-panel {
+      position: absolute;
+      top: 64px;
+      left: 16px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      background: var(--panel);
+      padding:10px;
+      border-radius:8px;
+      color:var(--text);
+      font-size:14px;
+      min-width:160px;
+    }
+    .status-row { display:flex; justify-content:space-between; gap:8px; color:var(--muted); }
+    .status-row span.value { font-weight:700; color:var(--text); }
+    .text-overlay {
+      position: absolute;
+      inset: 0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: rgba(0,0,0,0.6);
+      z-index: 50;
+    }
+    .text-panel {
+      background: #111;
+      padding: 18px;
+      border-radius: 10px;
+      color: white;
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .text-panel input[type="text"] {
+      padding:10px;
+      background:#222;
+      border:1px solid #333;
+      color:white;
+      border-radius:8px;
+      min-width:260px;
+      outline:none;
+    }
+    .text-panel button {
+      padding:10px 12px;
+      border-radius:8px;
+      border:none;
+      background:#1976d2;
+      color:white;
+      cursor:pointer;
+      font-weight:600;
+    }
+    .mobile-hint {
+      position:absolute;
+      bottom:12px;
+      left:50%;
+      transform:translateX(-50%);
+      color:var(--text);
+      background:var(--panel);
+      padding:8px;
+      border-radius:8px;
+      font-size:13px;
+    }
+    /* small responsive */
+    @media (max-width:720px){
+      .status-panel { left: 8px; top: 8px; font-size:13px; }
+      .top-instructions { font-size:12px; padding:6px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="canvas-wrap" id="canvasWrap">
+      <div class="top-instructions" id="instructions">
+        Controls: WASD = Move | Space = Pen | C = PenColor | B = BGColor | V = FillColor | F = Fill | Z = Undo | R = Reset | Backspace = Clear | T = Text | K = Square | M = Speed | N = SnapLock
+      </div>
+
+      <div class="status-panel" id="statusPanel">
+        <div class="status-row">Pen: <span class="value" id="penStatus">DOWN</span></div>
+        <div class="status-row">Pen Color: <span class="value" id="penColor">white</span></div>
+        <div class="status-row">Fill: <span class="value" id="fillStatus">OFF</span></div>
+        <div class="status-row">Fill Color: <span class="value" id="fillColor">white</span></div>
+        <div class="status-row">Speed: <span class="value" id="speed">5</span></div>
+        <div class="status-row">Snap Lock: <span class="value" id="snapLock">OFF</span></div>
+      </div>
+
+      <canvas id="turtleCanvas" width="800" height="600"></canvas>
+
+      <div class="mobile-hint" id="mobileHint" style="display:none;">
+        Tap controls hidden — desktop keyboard recommended.
+      </div>
+    </div>
+  </div>
+
+  <!-- Text input overlay (hidden by default) -->
+  <div id="textOverlay" class="text-overlay" style="display:none;">
+    <div class="text-panel">
+      <input id="textField" type="text" placeholder="Enter text to draw..." maxlength="80" />
+      <button id="drawTextBtn">Draw</button>
+      <button id="cancelTextBtn" style="background:#6b7280; margin-left:6px;">Cancel</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
