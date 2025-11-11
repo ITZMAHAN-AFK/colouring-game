@@ -178,86 +178,25 @@
   const drawTextBtn = $('drawTextBtn');
   const cancelTextBtn = $('cancelTextBtn');
 
-// --- Enhanced text input logic ---
-const textOverlay = $('textOverlay');
-const textField = $('textField');
-const drawTextBtn = $('drawTextBtn');
-const cancelTextBtn = $('cancelTextBtn');
-
-let currentText = '';  // stores typing in overlay
-let typing = false;    // freeze turtle while typing
-
-function showTextInput(){
-  textOverlay.style.display = 'flex';
-  currentText = '';
-  textField.value = '';
-  textField.focus();
-  State.text_input_visible = true;
-  typing = true;  // prevent turtle movement
-}
-
-function hideTextInput(){
-  textOverlay.style.display = 'none';
-  State.text_input_visible = false;
-  typing = false;
-}
-
-function addText(char){
-  currentText += char;
-  textField.value = currentText;
-}
-
-function removeChar(){
-  currentText = currentText.slice(0, -1);
-  textField.value = currentText;
-}
-
-// submit typed text
-function submitText(){
-  if(currentText.trim().length > 0){
-    State.text_elements.push({
-      content: currentText.trim(),
-      x: State.x,
-      y: State.y,
-      color: State.pen_color
-    });
+  function showTextInput(){
+    textOverlay.style.display = 'flex';
+    textField.value = '';
+    textField.focus();
+    State.text_input_visible = true;
   }
-  hideTextInput();
-  currentText = '';
-}
-
-// button handlers
-drawTextBtn.addEventListener('click', submitText);
-cancelTextBtn.addEventListener('click', hideTextInput);
-
-// capture typing and backspace
-textField.addEventListener('keydown', (e) => {
-  if(e.key === 'Enter') { 
-    e.preventDefault();
-    submitText();
-  } else if(e.key === 'Escape') {
-    e.preventDefault();
+  function hideTextInput(){
+    textOverlay.style.display = 'none';
+    State.text_input_visible = false;
+  }
+  drawTextBtn.addEventListener('click', () => {
+    const txt = textField.value.trim();
+    if (txt.length > 0){
+      State.text_elements.push({content: txt, x: State.x, y: State.y, color: State.pen_color});
+    }
     hideTextInput();
-  } else if(e.key === 'Backspace'){
-    e.preventDefault();
-    removeChar();
-  }
-});
-
-// optional: freeze turtle movement while typing
-function handleKeyDown(e){
-  if(typing) return; // skip movement while typing
-  const key = e.key.toLowerCase();
-  State.pressed_keys.add(key);
-  // ...rest of your existing keydown logic...
-}
-
-function handleKeyUp(e){
-  if(typing) return; 
-  const key = e.key.toLowerCase();
-  State.pressed_keys.delete(key);
-}
-
+  });
+  cancelTextBtn.addEventListener('click', () => hideTextInput());
+  textField.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') { drawTextBtn.click(); }
     if (e.key === 'Escape') hideTextInput();
   });
@@ -389,4 +328,3 @@ function handleKeyUp(e){
   };
 
 })();
-
