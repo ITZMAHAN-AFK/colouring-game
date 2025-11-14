@@ -2,59 +2,60 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Turtle Drawing — Canvas Version</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Turtle Drawing — Mobile Friendly</title>
   <style>
     :root{
       --bg:#0b0b0b; --panel:rgba(0,0,0,0.55); --text:#fff; --muted:#ddd;
     }
-    html,body{height:100%;margin:0;background:var(--bg);font-family:Inter, Arial, sans-serif}
-    .app{width:100vw;height:100vh;display:flex;align-items:center;justify-content:center}
-    .canvas-wrap{position:relative;width:100vw;height:100vh;max-width:1360px;max-height:768px}
-    canvas{display:block;width:100%;height:100%;background:#000}
-    .top-instructions{position:absolute;top:12px;left:50%;transform:translateX(-50%);color:var(--text);background:var(--panel);padding:8px 12px;border-radius:8px;font-size:14px;font-weight:600;white-space:nowrap}
-    .status-panel{position:absolute;top:64px;left:16px;display:flex;flex-direction:column;gap:8px;background:var(--panel);padding:10px;border-radius:8px;color:var(--text);font-size:14px;min-width:160px}
-    .status-row{display:flex;justify-content:space-between;gap:8px;color:var(--muted)}
-    .status-row span.value{font-weight:700;color:var(--text)}
-    .text-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:50}
-    .text-panel{background:#111;padding:18px;border-radius:10px;color:#fff;display:flex;gap:8px;align-items:center}
-    .text-panel input[type="text"]{padding:10px;background:#222;border:1px solid #333;color:#fff;border-radius:8px;min-width:260px;outline:none}
-    .text-panel button{padding:10px 12px;border-radius:8px;border:none;background:#1976d2;color:#fff;cursor:pointer;font-weight:600}
-    .mobile-hint{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);color:var(--text);background:var(--panel);padding:8px;border-radius:8px;font-size:13px}
+    html,body{height:100%;margin:0;background:var(--bg);font-family:Inter, Arial, sans-serif; touch-action: manipulation;}
+    .app{width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;}
+    .canvas-wrap{position:relative;width:100vw;height:100vh;max-width:1360px;max-height:768px;}
+    canvas{display:block;width:100%;height:100%;background:#000;}
+    .top-instructions{position:absolute;top:12px;left:50%;transform:translateX(-50%);color:var(--text);background:var(--panel);padding:8px 12px;border-radius:8px;font-size:14px;font-weight:600;white-space: nowrap;}
+    .status-panel{position:absolute;top:64px;left:16px;display:flex;flex-direction:column;gap:8px;background:var(--panel);padding:10px;border-radius:8px;color:var(--text);font-size:14px;min-width:160px;}
+    .status-row{display:flex;justify-content:space-between;gap:8px;color:var(--muted);}
+    .status-row span.value{font-weight:700;color:var(--text);}
+    .text-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:50;}
+    .text-panel{background:#111;padding:18px;border-radius:10px;color:#fff;display:flex;gap:8px;align-items:center;flex-direction:column;}
+    .text-panel input[type="text"]{padding:10px;background:#222;border:1px solid #333;color:#fff;border-radius:8px;min-width:200px;outline:none;width:80%;}
+    .text-panel button{padding:10px 12px;border-radius:8px;border:none;background:#1976d2;color:#fff;cursor:pointer;font-weight:600;width:80%;margin-top:6px;}
+    .mobile-controls{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;flex-wrap:wrap;gap:6px;justify-content:center;}
+    .mobile-button{padding:12px 16px;background:var(--panel);border:none;color:var(--text);border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;}
     @media (max-width:720px){.status-panel{left:8px;top:8px;font-size:13px}.top-instructions{font-size:12px;padding:6px}}
   </style>
 </head>
 <body>
   <div class="app">
     <div class="canvas-wrap" id="canvasWrap">
-      <div class="top-instructions" id="instructions">Controls: WASD = Move | Space = Pen | C = PenColor | B = BGColor | V = FillColor | F = Fill | Z = Undo | R = Reset | Backspace = Clear | T = Text | K = Square | M = Speed | N = SnapLock</div>
+      <div class="top-instructions" id="instructions">Controls: WASD = Move | Space = Pen | C = PenColor | B = BGColor | V = FillColor | F = Fill | Z = Undo | R = Reset | T = Text | K = Square | M = Speed | N = SnapLock</div>
 
-      <div class="status-panel" id="statusPanel">
-        <div class="status-row">Pen: <span class="value" id="penStatus">DOWN</span></div>
-        <div class="status-row">Pen Color: <span class="value" id="penColor">white</span></div>
-        <div class="status-row">Fill: <span class="value" id="fillStatus">OFF</span></div>
-        <div class="status-row">Fill Color: <span class="value" id="fillColor">white</span></div>
-        <div class="status-row">Speed: <span class="value" id="speed">5</span></div>
-        <div class="status-row">Snap Lock: <span class="value" id="snapLock">OFF</span></div>
+      <div class="status-panel" id="statusPanel"></div>
+      <canvas id="turtleCanvas" width="800" height="600"></canvas>
+
+      <div class="mobile-controls" id="mobileControls">
+        <button class="mobile-button" data-action="up">↑</button>
+        <button class="mobile-button" data-action="down">↓</button>
+        <button class="mobile-button" data-action="left">←</button>
+        <button class="mobile-button" data-action="right">→</button>
+        <button class="mobile-button" data-action="pen">Pen</button>
+        <button class="mobile-button" data-action="text">Text</button>
+        <button class="mobile-button" data-action="undo">Undo</button>
+        <button class="mobile-button" data-action="clear">Clear</button>
       </div>
 
-      <canvas id="turtleCanvas" width="800" height="600"></canvas>
-      <div class="mobile-hint" id="mobileHint" style="display:none;">Tap controls hidden — desktop keyboard recommended.</div>
-    </div>
-  </div>
-
-  <!-- Text input overlay -->
-  <div id="textOverlay" class="text-overlay" style="display:none;">
-    <div class="text-panel">
-      <input id="textField" type="text" placeholder="Enter text to draw..." maxlength="80" />
-      <button id="drawTextBtn">Draw</button>
-      <button id="cancelTextBtn" style="background:#6b7280;margin-left:6px">Cancel</button>
+      <div id="textOverlay" class="text-overlay" style="display:none;">
+        <div class="text-panel">
+          <input id="textField" type="text" placeholder="Enter text to draw..." maxlength="80" />
+          <button id="drawTextBtn">Draw</button>
+          <button id="cancelTextBtn" style="background:#6b7280;">Cancel</button>
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
   (function(){
-    // canvas setup and sizing
     const canvas = document.getElementById('turtleCanvas');
     const ctx = canvas.getContext('2d');
     const CANVAS_W = 800, CANVAS_H = 600;
@@ -62,190 +63,65 @@
     function resizeCanvas(){
       const rect = canvas.getBoundingClientRect();
       canvas.width = CANVAS_W; canvas.height = CANVAS_H;
-      canvas.style.width = rect.width + 'px';
-      canvas.style.height = rect.height + 'px';
+      canvas.style.width = rect.width + 'px'; canvas.style.height = rect.height + 'px';
     }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
     const $ = id => document.getElementById(id);
 
-    // central state
-    const State = {
-      x: CANVAS_W/2, y: CANVAS_H/2, heading:0,
-      speed:5, is_pen_down:true, pen_color:'white', pen_size:4,
-      paths:[], polygons:[], text_elements:[],
-      bg_color:'black', fill_color:'white', is_filling:false, fill_points:[],
-      text_input_visible:false, snap_lock:false, pressed_keys:new Set(),
-      COLOR_CYCLE:['white','red','blue','green','yellow','orange','purple','cyan','magenta','lime','pink','teal'],
-      BG_COLOR_CYCLE:['black','darkslateblue','darkgreen','maroon','indigo','saddlebrown','#333333'],
-      SPEED_CYCLE:[5,10,25,50,75,100]
-    };
-
-    let typingText = false;
+    const State = {x:CANVAS_W/2,y:CANVAS_H/2,heading:0,speed:5,is_pen_down:true,pen_color:'white',pen_size:4,paths:[],polygons:[],text_elements:[],bg_color:'black',fill_color:'white',is_filling:false,fill_points:[],text_input_visible:false,snap_lock:false,pressed_keys:new Set(),COLOR_CYCLE:['white','red','blue','green','yellow','orange','purple','cyan','magenta','lime','pink','teal'],BG_COLOR_CYCLE:['black','darkslateblue','darkgreen','maroon','indigo','saddlebrown','#333333'],SPEED_CYCLE:[5,10,25,50,75,100]};
+    let typingText=false;
 
     function updateStatus(){
-      $('penStatus').textContent = State.is_pen_down ? 'DOWN' : 'UP';
-      $('penColor').textContent = State.pen_color;
-      $('fillStatus').textContent = State.is_filling ? 'ON' : 'OFF';
-      $('fillColor').textContent = State.fill_color;
-      $('speed').textContent = State.speed;
-      $('snapLock').textContent = State.snap_lock ? 'ON' : 'OFF';
+      $('statusPanel').innerHTML = `
+        <div class='status-row'>Pen: <span class='value'>${State.is_pen_down?'DOWN':'UP'}</span></div>
+        <div class='status-row'>Pen Color: <span class='value'>${State.pen_color}</span></div>
+        <div class='status-row'>Fill: <span class='value'>${State.is_filling?'ON':'OFF'}</span></div>
+        <div class='status-row'>Fill Color: <span class='value'>${State.fill_color}</span></div>
+        <div class='status-row'>Speed: <span class='value'>${State.speed}</span></div>
+        <div class='status-row'>Snap Lock: <span class='value'>${State.snap_lock?'ON':'OFF'}</span></div>
+      `;
     }
 
-    function rad(deg){ return deg * Math.PI / 180; }
+    function rad(deg){return deg*Math.PI/180;}
+    function moveForward(){const r=rad(State.heading); const newX=State.x+State.speed*Math.cos(r); const newY=State.y-State.speed*Math.sin(r); if(State.is_pen_down){State.paths.push({start:{x:State.x,y:State.y},end:{x:newX,y:newY},color:State.pen_color,size:State.pen_size});} if(State.is_filling) State.fill_points.push({x:State.x,y:State.y}); State.x=newX; State.y=newY;}
+    function moveBackward(){const r=rad(State.heading); const newX=State.x-State.speed*Math.cos(r); const newY=State.y+State.speed*Math.sin(r); if(State.is_pen_down){State.paths.push({start:{x:State.x,y:State.y},end:{x:newX,y:newY},color:State.pen_color,size:State.pen_size});} if(State.is_filling) State.fill_points.push({x:State.x,y:State.y}); State.x=newX; State.y=newY;}
+    function turnLeft(){State.heading=(State.heading+(State.snap_lock?45:15))%360;}
+    function turnRight(){State.heading=(State.heading-(State.snap_lock?45:15)+360)%360;}
 
-    function moveForward(record=true){
-      const r = rad(State.heading);
-      const newX = State.x + State.speed * Math.cos(r);
-      const newY = State.y - State.speed * Math.sin(r);
-      if(State.is_pen_down && record){ State.paths.push({start:{x:State.x,y:State.y}, end:{x:newX,y:newY}, color:State.pen_color, size:State.pen_size}); }
-      if(State.is_filling) State.fill_points.push({x:State.x,y:State.y});
-      State.x = newX; State.y = newY;
-    }
+    // text input
+    const textOverlay=$('textOverlay'),textField=$('textField'),drawTextBtn=$('drawTextBtn'),cancelTextBtn=$('cancelTextBtn');
+    function showTextInput(){textOverlay.style.display='flex'; textField.value=''; textField.focus(); typingText=true;}
+    function hideTextInput(){textOverlay.style.display='none'; typingText=false;}
+    drawTextBtn.addEventListener('click',()=>{const txt=textField.value.trim(); if(txt.length>0) State.text_elements.push({content:txt,x:State.x,y:State.y,color:State.pen_color}); hideTextInput();});
+    cancelTextBtn.addEventListener('click',hideTextInput);
 
-    function moveBackward(record=true){
-      const r = rad(State.heading);
-      const newX = State.x - State.speed * Math.cos(r);
-      const newY = State.y + State.speed * Math.sin(r);
-      if(State.is_pen_down && record){ State.paths.push({start:{x:State.x,y:State.y}, end:{x:newX,y:newY}, color:State.pen_color, size:State.pen_size}); }
-      if(State.is_filling) State.fill_points.push({x:State.x,y:State.y});
-      State.x = newX; State.y = newY;
-    }
-
-    function turnLeft(){ State.heading = (State.heading + (State.snap_lock ? 45 : 15)) % 360; }
-    function turnRight(){ State.heading = (State.heading - (State.snap_lock ? 45 : 15) + 360) % 360; }
-
-    function cycle(array, current){ const i = array.indexOf(current); return array[(i+1) % array.length]; }
-
-    // input handling
-    function handleKeyDown(e){
-      if(typingText) return;
-      const key = e.key.toLowerCase();
-
-      // prevent scrolling for keys the app uses heavily
-      if([' ','arrowup','arrowdown','arrowleft','arrowright','backspace'].includes(key)) e.preventDefault();
-
-      // store pressed keys for continuous movement
-      State.pressed_keys.add(key);
-
-      // immediate single-press actions
-      if(key === ' '){ State.is_pen_down = !State.is_pen_down; }
-      else if(key === 'c'){ State.pen_color = cycle(State.COLOR_CYCLE, State.pen_color); }
-      else if(key === 'b'){ State.bg_color = cycle(State.BG_COLOR_CYCLE, State.bg_color); }
-      else if(key === 'v'){ State.fill_color = cycle(State.COLOR_CYCLE, State.fill_color); }
-      else if(key === 'f'){
-        State.is_filling = !State.is_filling;
-        if(State.is_filling){ State.fill_points = [{x:State.x,y:State.y}]; }
-        else { if(State.fill_points.length>0) { State.polygons.push({points: State.fill_points.slice(), color: State.fill_color}); State.fill_points = []; } }
-      }
-      else if(key === 'z'){ if(State.paths.length>0) State.paths.pop(); }
-      else if(key === 'r'){ State.x = CANVAS_W/2; State.y = CANVAS_H/2; State.heading = 0; }
-      else if(key === 'backspace'){ // full clear
-        State.paths = []; State.polygons = []; State.text_elements = []; State.x = CANVAS_W/2; State.y = CANVAS_H/2; State.heading = 0; State.bg_color = 'black';
-      }
-      else if(key === 't'){ showTextInput(); }
-      else if(key === 'k'){ // quick square
-        for(let side=0; side<4; side++){ for(let step=0; step<4; step++){ moveForward(true); } State.heading = (State.heading - 90 + 360) % 360; }
-      }
-      else if(key === 'm'){ const idx = State.SPEED_CYCLE.indexOf(State.speed); State.speed = State.SPEED_CYCLE[(idx+1) % State.SPEED_CYCLE.length]; }
-      else if(key === 'n'){ State.snap_lock = !State.snap_lock; }
-
-      updateStatus();
-    }
-
-    function handleKeyUp(e){ if(typingText) return; State.pressed_keys.delete(e.key.toLowerCase()); }
-
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-
-    // text input overlay logic
-    const textOverlay = $('textOverlay'), textField = $('textField'), drawTextBtn = $('drawTextBtn'), cancelTextBtn = $('cancelTextBtn');
-
-    function showTextInput(){ textOverlay.style.display = 'flex'; textField.value = ''; textField.focus(); State.text_input_visible = true; typingText = true; }
-    function hideTextInput(){ textOverlay.style.display = 'none'; State.text_input_visible = false; typingText = false; }
-
-    drawTextBtn.addEventListener('click', ()=>{
-      const txt = textField.value.trim(); if(txt.length>0){ State.text_elements.push({content:txt, x:State.x, y:State.y, color: State.pen_color}); }
-      hideTextInput();
+    // mobile controls
+    document.querySelectorAll('.mobile-button').forEach(btn=>{
+      btn.addEventListener('touchstart',()=>{
+        const action=btn.dataset.action;
+        if(action==='up') moveForward();
+        else if(action==='down') moveBackward();
+        else if(action==='left') turnLeft();
+        else if(action==='right') turnRight();
+        else if(action==='pen') State.is_pen_down=!State.is_pen_down;
+        else if(action==='text') showTextInput();
+        else if(action==='undo' && State.paths.length>0) State.paths.pop();
+        else if(action==='clear'){State.paths=[]; State.polygons=[]; State.text_elements=[];}
+        updateStatus();
+      });
     });
-    cancelTextBtn.addEventListener('click', hideTextInput);
-    textField.addEventListener('keydown',(e)=>{
-        // Allow normal typing, including Backspace
-        if(e.key === 'Enter'){
-          drawTextBtn.click();
-          e.preventDefault();
-        } else if(e.key === 'Escape'){
-          hideTextInput();
-          e.preventDefault();
-        }
-      });('keydown', (e)=>{ if(e.key === 'Enter'){ drawTextBtn.click(); e.preventDefault(); } else if(e.key === 'Escape'){ hideTextInput(); e.preventDefault(); } });
 
-    // continuous movement processing (every 50ms)
-    setInterval(()=>{
-      if(State.pressed_keys.size === 0) return;
-      if(State.pressed_keys.has('w') || State.pressed_keys.has('arrowup')) moveForward(true);
-      if(State.pressed_keys.has('s') || State.pressed_keys.has('arrowdown')) moveBackward(true);
-      if(State.pressed_keys.has('a') || State.pressed_keys.has('arrowleft')) turnLeft();
-      if(State.pressed_keys.has('d') || State.pressed_keys.has('arrowright')) turnRight();
-      if(State.pressed_keys.has('z') && State.paths.length>0) State.paths.pop();
-      updateStatus();
-    }, 50);
-
-    // drawing loop
     function draw(){
-      ctx.save();
-      ctx.fillStyle = State.bg_color; ctx.fillRect(0,0,CANVAS_W,CANVAS_H);
-
-      // filled polygons
-      for(const poly of State.polygons){
-        const pts = poly.points; if(!pts || pts.length===0) continue;
-        ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
-        for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i].x, pts[i].y);
-        ctx.closePath(); ctx.fillStyle = poly.color; ctx.fill();
-      }
-
-      // current fill path preview
-      if(State.is_filling && State.fill_points.length>0){
-        ctx.beginPath(); ctx.moveTo(State.fill_points[0].x, State.fill_points[0].y);
-        for(let i=1;i<State.fill_points.length;i++) ctx.lineTo(State.fill_points[i].x, State.fill_points[i].y);
-        ctx.lineWidth = 1; ctx.strokeStyle = State.fill_color; ctx.stroke();
-      }
-
-      // pen paths
-      for(const p of State.paths){
-        ctx.beginPath(); ctx.moveTo(p.start.x, p.start.y); ctx.lineTo(p.end.x, p.end.y);
-        ctx.lineWidth = p.size; ctx.lineCap = 'round'; ctx.strokeStyle = p.color; ctx.stroke();
-      }
-
-      // text elements
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = '16px Arial';
-      for(const t of State.text_elements){ ctx.fillStyle = t.color; ctx.fillText(t.content, t.x, t.y); }
-
-      drawTurtle();
-      ctx.restore();
-      requestAnimationFrame(draw);
+      ctx.save(); ctx.fillStyle=State.bg_color; ctx.fillRect(0,0,CANVAS_W,CANVAS_H);
+      for(const poly of State.polygons){if(!poly.points) continue; ctx.beginPath(); ctx.moveTo(poly.points[0].x,poly.points[0].y); for(let i=1;i<poly.points.length;i++) ctx.lineTo(poly.points[i].x,poly.points[i].y); ctx.closePath(); ctx.fillStyle=poly.color; ctx.fill();}
+      for(const p of State.paths){ctx.beginPath(); ctx.moveTo(p.start.x,p.start.y); ctx.lineTo(p.end.x,p.end.y); ctx.lineWidth=p.size; ctx.lineCap='round'; ctx.strokeStyle=p.color; ctx.stroke();}
+      ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.font='16px Arial';
+      for(const t of State.text_elements){ctx.fillStyle=t.color; ctx.fillText(t.content,t.x,t.y);}
+      drawTurtle(); ctx.restore(); requestAnimationFrame(draw);
     }
-
-    function drawTurtle(){
-      ctx.save(); ctx.translate(State.x, State.y); ctx.rotate((90 - State.heading) * Math.PI/180);
-      ctx.beginPath(); ctx.moveTo(0, -12); ctx.lineTo(10, 8); ctx.lineTo(-10, 8); ctx.closePath();
-      ctx.fillStyle = State.pen_color; ctx.fill(); ctx.restore();
-    }
-
-    requestAnimationFrame(draw);
-    updateStatus();
-
-    // prevent default backspace browser nav
-    window.addEventListener('keydown', (e)=>{ if(e.key === 'Backspace' && !State.text_input_visible) e.preventDefault(); });
-
-    // mobile hint
-    function detectMobile(){ const ua = navigator.userAgent || navigator.vendor || window.opera; const isMobile = /android|iphone|ipad|mobile/i.test(ua); if(isMobile) $('mobileHint').style.display = 'block'; }
-    detectMobile();
-
-    // expose for debugging / external tools
-    window.__TURTLE_STATE = State;
-    window.__TURTLE_reset = ()=>{ State.paths = []; State.polygons = []; State.text_elements = []; State.x = CANVAS_W/2; State.y = CANVAS_H/2; State.heading = 0; State.bg_color = 'black'; updateStatus(); };
+    function drawTurtle(){ctx.save(); ctx.translate(State.x,State.y); ctx.rotate((90-State.heading)*Math.PI/180); ctx.beginPath(); ctx.moveTo(0,-12); ctx.lineTo(10,8); ctx.lineTo(-10,8); ctx.closePath(); ctx.fillStyle=State.pen_color; ctx.fill(); ctx.restore();}
+    requestAnimationFrame(draw); updateStatus();
   })();
   </script>
 </body>
