@@ -170,7 +170,16 @@
       hideTextInput();
     });
     cancelTextBtn.addEventListener('click', hideTextInput);
-    textField.addEventListener('keydown', (e)=>{ if(e.key === 'Enter'){ drawTextBtn.click(); e.preventDefault(); } else if(e.key === 'Escape'){ hideTextInput(); e.preventDefault(); } });
+    textField.addEventListener('keydown',(e)=>{
+        // Allow normal typing, including Backspace
+        if(e.key === 'Enter'){
+          drawTextBtn.click();
+          e.preventDefault();
+        } else if(e.key === 'Escape'){
+          hideTextInput();
+          e.preventDefault();
+        }
+      });('keydown', (e)=>{ if(e.key === 'Enter'){ drawTextBtn.click(); e.preventDefault(); } else if(e.key === 'Escape'){ hideTextInput(); e.preventDefault(); } });
 
     // continuous movement processing (every 50ms)
     setInterval(()=>{
