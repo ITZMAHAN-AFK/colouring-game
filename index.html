@@ -89,14 +89,12 @@
     function turnLeft(){State.heading=(State.heading+(State.snap_lock?45:15))%360;}
     function turnRight(){State.heading=(State.heading-(State.snap_lock?45:15)+360)%360;}
 
-    // text input
     const textOverlay=$('textOverlay'),textField=$('textField'),drawTextBtn=$('drawTextBtn'),cancelTextBtn=$('cancelTextBtn');
     function showTextInput(){textOverlay.style.display='flex'; textField.value=''; textField.focus(); typingText=true;}
     function hideTextInput(){textOverlay.style.display='none'; typingText=false;}
     drawTextBtn.addEventListener('click',()=>{const txt=textField.value.trim(); if(txt.length>0) State.text_elements.push({content:txt,x:State.x,y:State.y,color:State.pen_color}); hideTextInput();});
     cancelTextBtn.addEventListener('click',hideTextInput);
 
-    // mobile controls
     document.querySelectorAll('.mobile-button').forEach(btn=>{
       btn.addEventListener('touchstart',()=>{
         const action=btn.dataset.action;
@@ -112,17 +110,22 @@
       });
     });
 
-    function draw(){
-      ctx.save(); ctx.fillStyle=State.bg_color; ctx.fillRect(0,0,CANVAS_W,CANVAS_H);
-      for(const poly of State.polygons){if(!poly.points) continue; ctx.beginPath(); ctx.moveTo(poly.points[0].x,poly.points[0].y); for(let i=1;i<poly.points.length;i++) ctx.lineTo(poly.points[i].x,poly.points[i].y); ctx.closePath(); ctx.fillStyle=poly.color; ctx.fill();}
-      for(const p of State.paths){ctx.beginPath(); ctx.moveTo(p.start.x,p.start.y); ctx.lineTo(p.end.x,p.end.y); ctx.lineWidth=p.size; ctx.lineCap='round'; ctx.strokeStyle=p.color; ctx.stroke();}
-      ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.font='16px Arial';
-      for(const t of State.text_elements){ctx.fillStyle=t.color; ctx.fillText(t.content,t.x,t.y);}
-      drawTurtle(); ctx.restore(); requestAnimationFrame(draw);
-    }
-    function drawTurtle(){ctx.save(); ctx.translate(State.x,State.y); ctx.rotate((90-State.heading)*Math.PI/180); ctx.beginPath(); ctx.moveTo(0,-12); ctx.lineTo(10,8); ctx.lineTo(-10,8); ctx.closePath(); ctx.fillStyle=State.pen_color; ctx.fill(); ctx.restore();}
-    requestAnimationFrame(draw); updateStatus();
-  })();
-  </script>
-</body>
-</html>
+    document.addEventListener('keydown', (e) => {
+      if (typingText) return;
+      const key = e.key.toLowerCase();
+      if ([" ", "w", "a", "s", "d"].includes(key)) e.preventDefault();
+
+      if (key === 'w') moveForward();
+      else if (key === 's') moveBackward();
+      else if (key === 'a') turnLeft();
+      else if (key === 'd') turnRight();
+      else if (key === ' ') State.is_pen_down = !State.is_pen_down;
+      else if (key === 'c'){
+        const idx = State.COLOR_CYCLE.indexOf(State.pen_color);
+        State.pen_color = State.COLOR_CYCLE[(idx + 1) % State.COLOR_CYCLE.length];
+      }
+      else if (key === 'b'){
+        const idx = State.BG_COLOR_CYCLE.indexOf(State.bg_color);
+        State.bg_color = State.BG_COLOR
+
+
