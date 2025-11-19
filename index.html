@@ -78,9 +78,9 @@
   const State = {
     x:400, y:300, heading:0, speed:5, is_pen_down:true, pen_color:'white', pen_size:4,
     paths:[], polygons:[], text_elements:[], bg_color:'black', fill_color:'white', is_filling:false, fill_points:[],
-    text_input_visible:false, snap_lock:false, pressed_keys:new Set(), show_mobile_prompt:false, is_mobile:false,
-    COLOR_CYCLE:['white','red','blue','green','yellow','orange','purple','cyan','magenta','lime','pink','teal'],
-    BG_COLOR_CYCLE:['black','darkslateblue','darkgreen','maroon','indigo','saddlebrown','#333333'],
+    text_input_visible:false, snap_lock:false, pressed_keys:new Set(), show_mobile_prompt:true, is_mobile:false,
+    COLOR_CYCLE:['white','red','blue','green','yellow','orange','purple','cyan','magenta','lime','pink','teal','black'],
+    BG_COLOR_CYCLE:['black','darkslateblue','white','darkgreen','maroon','indigo','saddlebrown','#333333'],
     SPEED_CYCLE:[5,10,25,50,75,100]
   };
 
@@ -205,6 +205,7 @@
   </script>
 </body>
 </html>
+
 
 
 
