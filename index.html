@@ -1,34 +1,49 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta name="description" content="A simple online turtle colouring game where you can draw, erase, and colour a turtle using easy controls.">
-  <meta name="keywords" content="turtle colouring game, turtle drawing game, online colouring, drawing game, turtle art">
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Turtle Colouring Game – Simple Online Drawing</title>
+
+  <!-- SEO Improvements -->
+  <title>Turtle Colouring Game – Free Online Turtle Drawing</title>
+
+  <meta name="description" content="Play a free online turtle colouring game. Draw, paint, customise colours, and design your own turtle using fun controls and interactive tools." />
+
+  <meta name="keywords" content="turtle colouring game, turtle drawing game, online colouring, paint turtle game, kids drawing game, free turtle colouring" />
+
+  <!-- Schema Markup (this is what Bing said is missing) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "Turtle Colouring Game",
+    "description": "A free online turtle colouring and drawing game where players can draw, colour, erase, and customise a turtle using keyboard controls.",
+    "genre": "Drawing Game",
+    "url": "https://itzmahan-afk.github.io/colouring-game/",
+    "operatingSystem": "Web",
+    "applicationCategory": "Game",
+    "author": {
+      "@type": "Person",
+      "name": "Mahan"
+    }
+  }
+  </script>
+
   <style>
-    :root { --bg: #0b0b0b; --panel: rgba(0,0,0,0.55); --text: #fff; --muted: #ddd; }
-    html,body { height: 100%; margin: 0; background: var(--bg); font-family: Inter, Arial, sans-serif; }
-    .app { width:100vw; height:100vh; display:flex; align-items:center; justify-content:center; }
-    .canvas-wrap { position: relative; width: 100vw; height: 100vh; max-width: 1360px; max-height: 768px; }
-    canvas { display:block; width:100%; height:100%; background: black; }
-    .top-instructions { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); color: var(--text); background: var(--panel); padding:8px 12px; border-radius:8px; font-size:14px; font-weight:600; white-space: nowrap; }
-    .status-panel { position: absolute; top: 64px; left: 16px; display:flex; flex-direction:column; gap:8px; background: var(--panel); padding:10px; border-radius:8px; color:var(--text); font-size:14px; min-width:160px; }
-    .status-row { display:flex; justify-content:space-between; gap:8px; color:var(--muted); }
-    .status-row span.value { font-weight:700; color:var(--text); }
-    .text-overlay { position: absolute; inset: 0; display:flex; align-items:center; justify-content:center; background: rgba(0,0,0,0.6); z-index: 50; }
-    .text-panel { background: #111; padding: 18px; border-radius: 10px; color: white; display:flex; gap:8px; align-items:center; }
-    .text-panel input[type="text"] { padding:10px; background:#222; border:1px solid #333; color:white; border-radius:8px; min-width:260px; outline:none; }
-    .text-panel button { padding:10px 12px; border-radius:8px; border:none; background:#1976d2; color:white; cursor:pointer; font-weight:600; }
-    .mobile-hint { position:absolute; bottom:12px; left:50%; transform:translateX(-50%); color:var(--text); background:var(--panel); padding:8px; border-radius:8px; font-size:13px; }
-    @media (max-width:720px){ .status-panel { left: 8px; top: 8px; font-size:13px; } .top-instructions { font-size:12px; padding:6px; } }
+    /* your existing CSS here (unchanged) */
   </style>
 </head>
+
 <body>
 <a href="https://itzmahan-afk.github.io/flappy-bird/" target="_blank">Play Flappy Bird</a>
   <h1 style="color: white; font-size: 24px; font-weight: bold; text-align: center; margin-top: 10px; margin-bottom: 20px;">
   Turtle Colouring Game
 </h1>
+  <p style="color:white; text-align:center; max-width:680px; margin:0 auto 20px;">
+  This is a free online turtle colouring game where you can draw, paint,
+  change colours, fill shapes, add text, and customise a turtle using
+  simple keyboard controls. Designed to be fun, easy, and fully interactive.
+</p>
   <div class="app">
     <div class="canvas-wrap" id="canvasWrap">
       <div class="top-instructions" id="instructions">
@@ -208,6 +223,7 @@
   </script>
 </body>
 </html>
+
 
 
 
